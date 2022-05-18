@@ -2,11 +2,16 @@
 from flask_app import app
 from flask import render_template,redirect,session,request, flash
 from flask_app.models.model_recipe import Recipe
+from flask_app.models.model_user import User
+# from flask_app.models import Recipe, User
 
 
 @app.route('/recipe/new')
 def recipe_new():
-    return render_template('new_recipe.html')
+    context ={
+        'user':User.get_one({'id':session['uuid']})
+    }    
+    return render_template('new_recipe.html', **context)
 
 @app.route('/recipe/create', methods=['POST'])
 def recipe_create():

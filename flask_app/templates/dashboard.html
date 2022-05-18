@@ -18,13 +18,40 @@
         <div class="d-flex justify-content-between align-items-center">
           <h1 class="display-1">Welcome {{user.fullname}}</h1>
           <div class="">
-            <a href="/user/logout" class="">create</a>
+            <a href="/recipe/new" class="">create</a>
             <a href="/user/logout" class="">logout</a>
           </div>
         </div>
         <div class="row">
           <p>These are the recipes</p>
-          <div class="box"></div>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>description</th>
+                <th>under 30 mins</th>
+                <th>actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for recipe in recipes%}
+              <tr>
+                <td>{{recipe.description}}</td>
+                {% if recipe.under_30 == 1 %}
+                <td>Yes</td>
+                {% else %}
+                <td>No</td>
+                {% endif %}
+                <td>
+                  <a href="/recipe/{{recipe.id}}">View Instructions</a>
+                  {% if recipe.user_id == session.user_id %}
+                  <a href="/edit/recipe/{{recipe.id}}">Edit</a>
+                  <a href="/delete/recipe/{{recipe.id}}">Delete</a>
+                  {% endif %}
+                </td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
