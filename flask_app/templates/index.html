@@ -17,16 +17,97 @@
       <h1 class="display-1">Title goes here</h1>
       <div class="row">
         <div class="col">
+          <!-- login start -->
           <h2>Login</h2>
-          <form action="/user/login" method="post">
-            <div class="form-group mb-2">
-              <input type="email" id="email" name="email" />
+          <form action="/user/login" method="post" class="form-control">
+            <div class="form-group my-3">
+              <input type="email" id="email" name="email" placeholder="email" />
+              {%for message in
+              get_flashed_messages(category_filter=["err_user_email_login"])%}
+              <p class="alert alert-danger" role="alert">{{message}}</p>
+              {%endfor%}
+            </div>
+            <div class="form-group mb-3">
+              <input
+                type="text"
+                id="password"
+                name="password"
+                placeholder="password"
+              />
+              {%for message in
+              get_flashed_messages(category_filter=["err_user_password_login"])%}
+              <p class="alert alert-danger" role="alert">{{message}}</p>
+              {%endfor%}
+            </div>
+            <div class="form-group mb-3">
+              <button class="btn btn-dark" type="submit">Login</button>
             </div>
           </form>
         </div>
+        <!-- end of login -->
+        <!-- registration start -->
         <div class="col">
           <h3>Registration</h3>
-          <form action="/"></form>
+          <form action="/user/create" method="post" class="form-control">
+            <div class="form-group my-3">
+              <input
+                type="first_name"
+                id="first_name"
+                name="first_name"
+                placeholder="First Name"
+              />
+              {%for message in
+              get_flashed_messages(category_filter=["err_user_first_name"])%}
+              <p class="alert alert-danger" role="alert">{{message}}</p>
+              {%endfor%}
+            </div>
+            <div class="form-group my-3">
+              <input
+                type="last_name"
+                id="last_name"
+                name="last_name"
+                placeholder="Last Name"
+              />
+              {%for message in
+              get_flashed_messages(category_filter=["err_user_last_name"])%}
+              <p class="alert alert-danger" role="alert">{{message}}</p>
+              {%endfor%}
+            </div>
+            <div class="form-group my-3">
+              <input type="email" id="email" name="email" placeholder="Email" />
+              {%for message in
+              get_flashed_messages(category_filter=["err_user_email"])%}
+              <p class="alert alert-danger" role="alert">{{message}}</p>
+              {%endfor%}
+            </div>
+            <div class="form-group mb-3">
+              <input
+                type="text"
+                id="password"
+                name="password"
+                placeholder="Password"
+              />
+              {%for message in
+              get_flashed_messages(category_filter=["err_user_password"])%}
+              <p class="alert alert-danger" role="alert">{{message}}</p>
+              {%endfor%}
+            </div>
+            <div class="form-group mb-3">
+              <input
+                type="text"
+                id="confirm_password"
+                name="confirm_password"
+                placeholder="Confirm Password"
+              />
+              {%for message in
+              get_flashed_messages(category_filter=["err_user_confirm_password"])%}
+              <p class="alert alert-danger" role="alert">{{message}}</p>
+              {%endfor%}
+            </div>
+            <div class="form-group mb-3">
+              <button class="btn btn-dark" type="submit">Registration</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

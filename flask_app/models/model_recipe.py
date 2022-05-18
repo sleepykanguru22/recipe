@@ -1,7 +1,7 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 from flask_app import DATABASE
-from flask_app.models import recipe
+from flask_app.models import model_recipe
 
 class Recipe:
     # db = 'recipes_db'
