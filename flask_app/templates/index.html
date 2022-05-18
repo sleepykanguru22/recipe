@@ -21,7 +21,13 @@
           <h2>Login</h2>
           <form action="/user/login" method="post" class="form-control">
             <div class="form-group my-3">
-              <input type="email" id="email" name="email" placeholder="email" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="email"
+                value="{{session['email']}}"
+              />
               {%for message in
               get_flashed_messages(category_filter=["err_user_email_login"])%}
               <p class="alert alert-danger" role="alert">{{message}}</p>
@@ -41,6 +47,19 @@
             </div>
             <div class="form-group mb-3">
               <button class="btn btn-dark" type="submit">Login</button>
+            </div>
+            <div class="form-group mb-3">
+              {%if session ['email']%}
+              <input
+                type="checkbox"
+                name="remember_me"
+                id="remember_me"
+                checked
+              />
+              {%else%}
+              <input type="checkbox" name="remember_me" id="remember_me" />
+              {%endif%}
+              <label for="remember_me">remember me</label>
             </div>
           </form>
         </div>

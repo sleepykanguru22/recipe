@@ -7,25 +7,35 @@ from flask_app.models.model_user import User
 
 @app.route('/user/login', methods=['POST'])
 def user_new():
-    if not User.validate_login(request.form):
-        return redirect('/')
-    return render_template('new_user.html')
+    User.validate_login(request.form)
+    if 'remember_me' in request.form:
+        session['email'] = request.form['email']
+    else:
+        del session['email']
+    return redirect('/')
+    # return render_template('new_user.html')
     # redirect to dashboard
+
+@app.route('/user/logout')
+def user_logout():
+    del session['uuid']
+    return redirect('/')
 
 @app.route('/user/create', methods=['POST'])
 def user_create():
+    print(request.form)
     if not User.validate(request.form):
        return redirect('/')  
     # need to change model user file name keep getting error of undefined
     # since the file is imported do I need to put the file name in this fucntion?
-    
+    print("something")
     hash_password=bcrypt.generate_password_hash(request.form['password'])
     #hash password
     data ={
         **request.form,
         'password':hash_password
     }
-    # extracts everything from request.form can be used when data:dict is using same fields & few modifications
+       # extracts everything from request.form can be used when data:dict is using same fields & few modifications
     user_id=User.create(data)
     session['uuid'] = user_id
     return redirect('/')

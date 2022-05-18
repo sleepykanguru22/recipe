@@ -1,6 +1,6 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app import DATABASE
-from flask import flash, session, bcrypt
+from flask_app import DATABASE, bcrypt
+from flask import flash, session
 import re	# the regex module
 # create a regular expression object that we'll use later   
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
@@ -16,6 +16,7 @@ class User:
         self.password = data['password']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.fullname = f"{self.first_name.capitalize()} {self.last_name.capitalize()}"
 
     @classmethod
     def create(cls,data):
@@ -82,7 +83,7 @@ class User:
             potential_user = User.get_one_by_email({'email':data['email']})
             if potential_user:
                 flash('email address already exsists','err_user_email')
-            is_valid = False
+                is_valid = False
 
         if len(data['password'])<1:
             is_valid = False
@@ -113,11 +114,10 @@ class User:
             potential_user = User.get_one_by_email({'email':data['email']})
             if not potential_user:
                 flash('email address does not exsists','err_user_email_login')
-            is_valid = False
+                is_valid = False
             else:
                 if not bcrypt.check_password_hash(potential_user.password, data['password']):
-                flash('invalid email or password', 'err_user_password_login')
-                #why can't I put an else statement here? 
+                    flash('invalid email or password', 'err_user_password_login')
                 else:
                     session['uuid'] = potential_user.id
 
