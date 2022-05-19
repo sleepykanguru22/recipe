@@ -9,20 +9,21 @@ class Recipe:
         self.id = data['id']
         self.name = data['name']
         self.description = data['description']
-        self.instructions = data['instructions']
+        self.instruction = data['instruction']
         self.under_30 = data['under_30']
+        self.date_made = data['date_made']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.user_id = data['user_id']
 
     @classmethod
-    def save(cls,data):
-        query = "INSERT INTO users (first_name,last_name,email,password) VALUES(%(first_name)s,%(last_name)s,%(email)s,%(password)s)"
-        return connectToMySQL(cls.db).query_db(query,data)
+    def create(cls,data):
+        query = "INSERT INTO recipes (name,description,instruction,under_30,date_made,user_id) VALUES(%(name)s,%(description)s,%(instruction)s,%(under_30)s,%(date_made)s,%(user_id)s)"
+        return connectToMySQL(DATABASE).query_db(query,data)
 
     @classmethod
     def get_one(cls,data:dict)-> list:
-        query = "SELECT * FROM users WHERE id = %(id)s;"
+        query = "SELECT * FROM recipes WHERE id = %(id)s;"
         results = connectToMySQL(DATABASE).query_db(query,data)
         if results:
             return cls(results[0])
@@ -30,26 +31,50 @@ class Recipe:
     
     @classmethod
     def get_all(cls):
-        query = "SELECT * FROM users;"
+        query = "SELECT * FROM recipes;"
         results = connectToMySQL(DATABASE).query_db(query)
-        users = []
+        recipes = []
         for row in results:
-            users.append( cls(row))
-        return users
+            recipes.append( cls(row))
+        return recipes
     
     @classmethod
     def update_one(cls,data:dict)-> None:
-        query = "UPATE users SET first_name = %(first_name)s WHERE id = %(id)s"
+        query = "UPATE recipes SET name = %(name)s WHERE id = %(id)s"
         return connectToMySQL(DATABASE).query_db(query,data)
 
 
     @classmethod
     def delete_one(cls,data:dict)-> None:
-        query = "DELETE FROM users WHERE id = %(id)s"
+        query = "DELETE FROM recipes WHERE id = %(id)s"
         return connectToMySQL(DATABASE).query_db(query,data)
 
 
+    @staticmethod
+    def validate_recipe(data:dict)-> bool:
+        is_valid = True
 
+        if len(data['name'])<1:
+            is_valid = False
+            flash('required field', 'err_recipe_name')
+
+        if len(data['description'])<1:
+            is_valid = False
+            flash('required field', 'err_recipe_description')
+
+        if len(data['instructions'])<1:
+            is_valid = False
+            flash('required field', 'err_recipe_instruction')
+
+        if len(data['date_made'])<1:
+            is_valid = False
+            flash('required field', 'err_recipe_date')
+
+        if len(data['under_30'])<1:
+            is_valid = False
+            flash('required field', 'err_recipe_under_30')
+
+        return is_valid
 
 
 

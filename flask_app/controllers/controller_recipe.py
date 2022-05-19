@@ -15,6 +15,13 @@ def recipe_new():
 
 @app.route('/recipe/create', methods=['POST'])
 def recipe_create():
+    if not Recipe.validate_recipe(request.form):
+        return redirect('/recipe/new')
+    data = {
+        **request.form,
+        'user_id': session['uuid']
+    }  
+    Recipe.create(data) 
     return redirect('/')
 
 @app.route('/recipe/<int:id>')
